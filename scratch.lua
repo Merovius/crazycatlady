@@ -28,6 +28,7 @@ function scratch:update(dt)
 	self.t = self.t + dt
 	if self.t > 5 then
 		score = math.floor(score + 100*self.mult)
+		T = T + 20*self.mult
 		screen = shootingrange
 		return
 	end
