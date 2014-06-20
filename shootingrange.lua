@@ -92,20 +92,22 @@ function shootingrange:update(dt)
 	self.enemycooloff = self.enemycooloff - dt
 	if self.enemycooloff <= 0 then
 		self.enemycooloff = math.random()*5
-		local startx = math.random()*self.width
-		local endx = math.random()*self.width
-		local n = math.random(3)-1
-		local enemy = {}
-		enemy.img = imgs[string.format("enemy%d", n)]
-		local w, h = enemy.img:getWidth(), enemy.img:getHeight()
-		enemy.ox = w/2
-		enemy.oy = h/2
-		local c1 = bezier(startx, 768+h/2, startx, 768-h/2, startx, 768-h/2, (startx+endx)/2, 768-h/2)
-		local c2 = bezier((startx+endx)/2, 768-h/2, endx, 768-h/2, endx, 768-h/2, endx, 768+h/2)
-		enemy.curve = concat(c1, c2)
-		enemy.speed = math.abs(startx-endx)*0.01*(1+math.random())
-		enemy.t0 = self.t
-		table.insert(self.enemies, enemy)
+		if #self.enemies < 3 then
+			local startx = math.random()*self.width
+			local endx = math.random()*self.width
+			local n = math.random(3)-1
+			local enemy = {}
+			enemy.img = imgs[string.format("enemy%d", n)]
+			local w, h = enemy.img:getWidth(), enemy.img:getHeight()
+			enemy.ox = w/2
+			enemy.oy = h/2
+			local c1 = bezier(startx, 768+h/2, startx, 768-h/2, startx, 768-h/2, (startx+endx)/2, 768-h/2)
+			local c2 = bezier((startx+endx)/2, 768-h/2, endx, 768-h/2, endx, 768-h/2, endx, 768+h/2)
+			enemy.curve = concat(c1, c2)
+			enemy.speed = math.abs(startx-endx)*0.01*(1+math.random())
+			enemy.t0 = self.t
+			table.insert(self.enemies, enemy)
+		end
 	end
 
 	for i, enemy in ipairs(self.enemies) do
