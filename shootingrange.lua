@@ -94,7 +94,11 @@ function shootingrange:update(dt)
 		self.enemycooloff = math.random()*5
 		if #self.enemies < 3 then
 			local startx = math.random()*self.width
-			local endx = math.random()*self.width
+			local endx = startx
+			while math.abs(endx - startx) < 200 do
+				endx = math.random()*self.width
+			end
+
 			local n = math.random(3)-1
 			local enemy = {}
 			enemy.img = imgs[string.format("enemy%d", n)]
