@@ -1,11 +1,11 @@
+require("splash")
 require("scratch")
 require("shootingrange")
 
 imgs = {}
 sounds = {}
 score = 0
-screen = shootingrange
-remaining = 120
+screen = splash
 T = 0
 
 function love.load()
@@ -16,24 +16,17 @@ function love.load()
 
 	love.mouse.setGrabbed(true)
 
-	shootingrange:load()
+	splash:load()
 end
 
 function love.draw()
 	screen:draw()
-
-	love.graphics.printf(score, 10, 10, 1014, "left")
-	love.graphics.printf(string.format("%d:%.2d", math.floor(remaining / 60), remaining % 60), 10, 10, 1014, "right")
 end
 
 function love.update(dt)
 	T = T + dt
-	remaining = remaining - dt
 
 	screen:update(dt)
-	if remaining <= 0 then
-		love.event.quit()
-	end
 end
 
 function love.keypressed(key)

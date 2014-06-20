@@ -20,6 +20,7 @@ function shootingrange:load()
 	self.t = 0
 	self.catcooloff = 0
 	self.enemycooloff = 0
+	self.remaining = 120
 end
 
 function shootingrange:draw()
@@ -43,10 +44,16 @@ function shootingrange:draw()
 	love.graphics.draw(imgs["hand"], 1024-imgs["hand"]:getWidth()+self.pos/10, 768-imgs["hand"]:getHeight(), 0, 1, 1)
 
 	love.graphics.printf(score, 10, 10, 1024, "left")
+	love.graphics.printf(string.format("%d:%.2d", math.floor(self.remaining / 60), self.remaining % 60), 10, 10, 1014, "right")
 end
 
 function shootingrange:update(dt)
 	self.t = self.t + dt
+	self.remaining = self.remaining - dt
+	if self.remaining < 0 then
+		love.event.quit()
+	end
+
 	self.catcooloff = self.catcooloff - dt
 
 	local x = love.mouse.getX()
@@ -74,7 +81,6 @@ function shootingrange:update(dt)
 		cat.x, cat.y = cat.curve(self.t - cat.t0)
 
 		if self.t - cat.t0 >= 1 then
-			table.insert(rc, i)
 			table.remove(self.cats, i)
 		elseif self.t - cat.t0 >= 0.8 then
 			for j, enemy in ipairs(self.enemies) do
