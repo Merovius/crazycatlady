@@ -3,6 +3,7 @@ scratch = {}
 function scratch:load()
 	self.t = 0
 	self.mult = 0.5
+	self.shake = const(0)
 end
 
 function scratch:draw()
@@ -10,7 +11,7 @@ function scratch:draw()
 	local scale = (768 / h) * 0.8
 	local x = ((1024-self.img:getWidth()) / 2) / scale
 	local y = (768-h*scale)
-	love.graphics.draw(self.img, x, y, 0, scale, scale)
+	love.graphics.draw(self.img, x + self.shake(self.t), y, 0, scale, scale)
 
 	love.graphics.setColor(255*(1-self.mult), 255*self.mult, 0)
 	love.graphics.rectangle("fill", 100, 700, 824*self.mult, 20)
@@ -38,6 +39,7 @@ function scratch:keypressed(key)
 		if self.mult > 1 then
 			self.mult = 1
 		end
+		self.shake = dampening(50, 2, 5, self.t)
 	end
 end
 

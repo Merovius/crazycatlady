@@ -25,3 +25,27 @@ end
 function len(x, y)
 	return math.sqrt(x*x + y*y)
 end
+
+function const(c)
+	return function(t)
+		return c
+	end
+end
+
+function dampening(amp, damp, f, T0)
+	if T0 == nil then
+		T0 = 0
+	end
+	if f == nil then
+		f = 1
+	end
+	if damp == nil then
+		damp = 1
+	end
+	if amp == nil then
+		amp = 1
+	end
+	return function(t)
+		return amp*math.exp(-damp*(t-T0))*math.sin(2*math.pi*f*(t - T0))
+	end
+end
