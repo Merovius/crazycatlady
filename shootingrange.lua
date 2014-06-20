@@ -40,7 +40,7 @@ function shootingrange:draw()
 		love.graphics.draw(imgs["cat"], cat.x-dx-self.pos, cat.y-dy, 0, 1, 1)
 	end
 
---	love.graphics.draw(imgs["hand"], 1024-imgs["hand"]:getWidth()+self.pos/10, 768-imgs["hand"]:getHeight(), 0, 1, 1)
+	love.graphics.draw(imgs["hand"], 1024-imgs["hand"]:getWidth()+self.pos/10, 768-imgs["hand"]:getHeight(), 0, 1, 1)
 
 	love.graphics.printf(score, 10, 10, 1024, "left")
 end
@@ -74,6 +74,7 @@ function shootingrange:update(dt)
 		cat.x, cat.y = cat.curve(self.t - cat.t0)
 
 		if self.t - cat.t0 >= 1 then
+			table.insert(rc, i)
 			table.remove(self.cats, i)
 		elseif self.t - cat.t0 >= 0.8 then
 			for j, enemy in ipairs(self.enemies) do
@@ -91,8 +92,8 @@ function shootingrange:update(dt)
 
 	self.enemycooloff = self.enemycooloff - dt
 	if self.enemycooloff <= 0 then
-		self.enemycooloff = math.random()*5
-		if #self.enemies < 3 then
+		self.enemycooloff = math.random() * 3 / (1+T/90)
+		if #self.enemies < 5 then
 			local startx = math.random()*self.width
 			local endx = startx
 			while math.abs(endx - startx) < 200 do
@@ -108,7 +109,7 @@ function shootingrange:update(dt)
 			local c1 = bezier(startx, 768+h/2, startx, 768-h/2, startx, 768-h/2, (startx+endx)/2, 768-h/2)
 			local c2 = bezier((startx+endx)/2, 768-h/2, endx, 768-h/2, endx, 768-h/2, endx, 768+h/2)
 			enemy.curve = concat(c1, c2)
-			enemy.speed = math.abs(startx-endx)*0.01*(1+math.random())
+			enemy.speed = math.abs(startx-endx)*(1+math.random()) * 0.01 / (1 + T/120)
 			enemy.t0 = self.t
 			table.insert(self.enemies, enemy)
 		end
