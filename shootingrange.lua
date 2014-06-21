@@ -18,7 +18,7 @@ function shootingrange:load()
 	self.catcooloff = 0
 	self.enemycooloff = 0
 	self.remaining = 120
-	self.landheight = 200
+	self.landheight = 300
 	self.wanderx = 600
 	self.wandery = 100
 	self.numenemies = 3
