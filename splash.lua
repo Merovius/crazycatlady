@@ -16,6 +16,9 @@ function splash:draw()
 
 	love.graphics.setColor(255, 255, 255)
 	for i, score, name in highscore() do
+		if score == 0 then
+			break
+		end
 		love.graphics.printf(string.format("%d. %s", i, name), 100, 50 + 50*i, 924, "left")
 		love.graphics.printf(string.format("%d", score), 100, 50 + 50*i, 824, "right")
 	end

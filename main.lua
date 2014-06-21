@@ -1,3 +1,4 @@
+require("name")
 require("sick")
 require("splash")
 require("scratch")
@@ -12,7 +13,7 @@ T = 0
 function love.load()
 	math.randomseed(os.time())
 
-	highscore.set("catlady", 9, "Nobody", 0)
+	highscore.set("score", 9, "Nobody", 0)
 
 	font = love.graphics.newFont("assets/comic.ttf", 50)
 	love.graphics.setFont(font)

@@ -20,7 +20,7 @@ function shootingrange:load()
 	self.t = 0
 	self.catcooloff = 0
 	self.enemycooloff = 0
-	self.remaining = 120
+	self.remaining = 10
 end
 
 function shootingrange:draw()
@@ -52,8 +52,7 @@ function shootingrange:update(dt)
 	self.t = self.t + dt
 	self.remaining = self.remaining - dt
 	if self.remaining < 0 then
-		highscore.add("Merovius", score)
-		screen = splash
+		screen = name
 		return
 	end
 
