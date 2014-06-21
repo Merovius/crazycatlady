@@ -3,7 +3,7 @@ require("util")
 shootingrange = {}
 
 function shootingrange:load()
-	for _, v in ipairs({ "bg", "hand", "cat", "catr", "enemy0", "enemy1", "enemy2", "muschi_holding_02" }) do
+	for _, v in ipairs({ "bg", "hand", "cat", "catr", "catdown", "catdownr", "enemy0", "enemy1", "enemy2", "muschi_holding_02" }) do
 		imgs[v] = love.graphics.newImage("assets/"..v..".png")
 	end
 	self.width = imgs["bg"]:getWidth()
@@ -34,11 +34,8 @@ function shootingrange:draw()
 		love.graphics.draw(enemy.img, enemy.x-enemy.ox-self.pos, enemy.y-enemy.oy, 0, 1, 1)
 	end
 
-	local dx = imgs["cat"]:getWidth()/2
-	local dy = imgs["cat"]:getHeight()/2
-
 	for _, cat in ipairs(self.cats) do
-		love.graphics.draw(cat.img, cat.x-dx-self.pos, cat.y-dy, 0, 1, 1)
+		love.graphics.draw(cat.img, cat.x-cat.ox-self.pos, cat.y-cat.oy, 0, 1, 1)
 	end
 
 	local w = imgs["muschi_holding_02"]:getWidth()
@@ -82,9 +79,20 @@ function shootingrange:update(dt)
 		self.pos = self.width - 1024
 	end
 
-	local thresh = imgs["cat"]:getWidth()/ 2
+	local thresh = imgs["catdown"]:getWidth()/ 2
 	for i, cat in ipairs(self.cats) do
-		cat.x, cat.y = cat.curve(self.t - cat.t0)
+		local newx, newy = cat.curve(self.t - cat.t0)
+		if not cat.turned and newy > cat.y then
+			cat.turned = true
+			if newx < cat.x then
+				cat.img = imgs["catdown"]
+			else
+				cat.img = imgs["catdownr"]
+			end
+			cat.ox = cat.img:getWidth()/2
+			cat.oy = cat.img:getHeight()/2
+		end
+		cat.x, cat.y = newx, newy
 
 		if self.t - cat.t0 >= 1 then
 			table.remove(self.cats, i)
@@ -181,7 +189,7 @@ function shootingrange:mousepressed(x, y, button)
 		cat.img = imgs["cat"]
 	end
 
-	local w = imgs["cat"]:getWidth()
+	local w = cat.img:getWidth()
 	local sx = self.pos + (1024 - w) / 2 + (self.width/2-self.pos)/10 + self.handx
 	local sy = self.handy
 
@@ -190,6 +198,9 @@ function shootingrange:mousepressed(x, y, button)
 	local vx, vy = ex - sx, ey - 200 - sy
 
 	cat.curve = bezier(sx, sy, sx + vx, sy + vy, ex, ey-150, ex, ey)
+
+	cat.x, cat.y = sx, sy
+	cat.ox, cat.oy = w/2, cat.img:getHeight()/2
 
 	table.insert(self.cats, cat)
 	love.audio.play(sounds["angry_cat"])
