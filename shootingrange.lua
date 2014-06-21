@@ -95,9 +95,9 @@ function shootingrange:update(dt)
 	end
 
 	if love.keyboard.isDown("left") then
-		self.pos = self.pos + dt*200
-	elseif love.keyboard.isDown("right") then
 		self.pos = self.pos - dt*200
+	elseif love.keyboard.isDown("right") then
+		self.pos = self.pos + dt*200
 	end
 
 	if self.pos < 0 then
