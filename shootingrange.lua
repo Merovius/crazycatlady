@@ -3,8 +3,16 @@ require("util")
 shootingrange = {}
 
 function shootingrange:load()
-	for _, v in ipairs({ "bg", "hand", "cat", "catr", "catdown", "catdownr", "enemy0", "enemy1", "enemy2", "muschi_holding_02" }) do
+	for _, v in ipairs({ "bg", "hand", "cat", "catr", "catdown", "catdownr", "muschi_holding_02" }) do
 		imgs[v] = love.graphics.newImage("assets/"..v..".png")
+	end
+	for i = 0, 0 do
+		for j = 0, 1 do
+			for _, v in ipairs{ "", "r" } do
+				local v = "enemy"..i..j..v
+				imgs[v] = love.graphics.newImage("assets/"..v..".png")
+			end
+		end
 	end
 	self.width = imgs["bg"]:getWidth()
 
@@ -114,11 +122,12 @@ function shootingrange:update(dt)
 	if self.enemycooloff <= 0 then
 		self.enemycooloff = math.random() * 3 / (1+T/90)
 		if #self.enemies < self.numenemies then
-			local n = math.random(3)-1
 			local enemy = {}
-			enemy.img = imgs[string.format("enemy%d", n)]
+			enemy.n = math.random(1)-1
 
-			local w, h = enemy.img:getWidth(), enemy.img:getHeight()
+			local img = "enemy"..enemy.n.."1"
+
+			local w, h = imgs["enemy00"]:getWidth(), imgs["enemy00"]:getHeight()
 			enemy.ox = w/2
 			enemy.oy = h/2
 
@@ -127,6 +136,11 @@ function shootingrange:update(dt)
 				startx = startx + 768 + w
 			end
 			local endx = startx + math.random()*self.wanderx - self.wanderx/2
+			if endx > startx then
+				enemy.right = true
+				img = img .. "r"
+			end
+			enemy.img = imgs[img]
 
 			local starty = 768-math.random()*self.landheight
 			local endy = starty + math.random()*self.wandery - self.wandery/2
@@ -135,6 +149,7 @@ function shootingrange:update(dt)
 			end
 			enemy.x = startx
 			enemy.y = starty
+			enemy.t0 = self.t
 
 			enemy.curve = line(startx, starty, endx, endy)
 			enemy.curvelen = len(startx, starty, endx, endy)
@@ -166,7 +181,22 @@ function shootingrange:update(dt)
 			enemy.curvelen = len(startx, starty, endx, endy)
 			enemy.wait = math.random()
 			enemy.curve = line(startx, starty, endx, endy)
+			enemy.right = (startx < endx)
 		end
+
+		local img = "enemy"
+		img = img .. enemy.n
+		local t = self.t - enemy.t0
+		t = t - math.floor(t)
+		if t > 0.5 then
+			img = img .. "0"
+		else
+			img = img .. "1"
+		end
+		if enemy.right then
+			img = img .. "r"
+		end
+		enemy.img = imgs[img]
 	end
 end
 
