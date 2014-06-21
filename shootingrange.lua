@@ -96,7 +96,7 @@ function shootingrange:update(dt)
 			table.remove(self.cats, i)
 		elseif self.t - cat.t0 >= 0.8 then
 			for j, enemy in ipairs(self.enemies) do
-				if dist(cat.x+cat.ox-self.pos, cat.y+cat.oy, enemy.x-self.pos, enemy.y-120) < 50 then
+				if dist(cat.x+cat.ox-self.pos, cat.y+cat.oy, enemy.x-self.pos, enemy.y-120) < 75 then
 					table.remove(self.cats, i)
 					table.remove(self.enemies, j)
 					scratch.n = enemy.n

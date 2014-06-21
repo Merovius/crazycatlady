@@ -15,7 +15,7 @@ end
 function name:keypressed(key)
 	if key == "return" then
 		highscore.add(self.player, score)
-		screen = splash
+		screen = leaderboard
 	end
 	if key:match("^%w$") then
 		self.player = self.player .. key
