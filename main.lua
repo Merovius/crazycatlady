@@ -18,6 +18,18 @@ function love.load()
 	font = love.graphics.newFont("assets/comic.ttf", 50)
 	love.graphics.setFont(font)
 
+	for _, v in ipairs({ "bg", "splash", "hand", "cat", "catr", "catdown", "catdownr", "muschi_holding_02" }) do
+		imgs[v] = love.graphics.newImage("assets/"..v..".png")
+	end
+	for i = 0, 0 do
+		for j = 0, 1 do
+			for _, v in ipairs{ "", "r" } do
+				local v = "enemy"..i..j..v
+				imgs[v] = love.graphics.newImage("assets/"..v..".png")
+			end
+		end
+	end
+
 	love.mouse.setGrabbed(true)
 
 	splash:load()

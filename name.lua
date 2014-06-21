@@ -2,8 +2,14 @@ name = {}
 name.player = ""
 
 function name:draw()
-	love.graphics.printf("Enter your name for the highscore", 10, 10, 1004, "center")
-	love.graphics.printf(self.player, 10, 100, 1004, "center")
+	love.graphics.draw(imgs["splash"], 0, 0, 0, 1, 1)
+
+	love.graphics.setColor(0, 0, 0, 100)
+	love.graphics.rectangle("fill", 90, 200, 844, 200)
+	love.graphics.setColor(255, 255, 255)
+
+	love.graphics.printf("Enter your name for the highscore", 100, 210, 824, "center")
+	love.graphics.printf(self.player, 10, 300, 1004, "center")
 end
 
 function name:keypressed(key)

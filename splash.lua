@@ -4,9 +4,6 @@ function splash:load()
 end
 
 function splash:draw()
-	for _, v in ipairs({ "splash" }) do
-		imgs[v] = love.graphics.newImage("assets/"..v..".png")
-	end
 	local w = imgs["splash"]:getWidth()
 	local h = imgs["splash"]:getHeight()
 	love.graphics.draw(imgs["splash"], 0, 0, 0, 1, 1)

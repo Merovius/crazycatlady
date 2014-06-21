@@ -3,17 +3,6 @@ require("util")
 shootingrange = {}
 
 function shootingrange:load()
-	for _, v in ipairs({ "bg", "hand", "cat", "catr", "catdown", "catdownr", "muschi_holding_02" }) do
-		imgs[v] = love.graphics.newImage("assets/"..v..".png")
-	end
-	for i = 0, 0 do
-		for j = 0, 1 do
-			for _, v in ipairs{ "", "r" } do
-				local v = "enemy"..i..j..v
-				imgs[v] = love.graphics.newImage("assets/"..v..".png")
-			end
-		end
-	end
 	self.width = imgs["bg"]:getWidth()
 
 	for _, v in ipairs({ "angry_cat" }) do
