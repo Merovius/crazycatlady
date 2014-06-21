@@ -15,8 +15,8 @@ function shootingrange:load()
 	self.pos = 0
 	self.cats = {}
 	self.enemies = {}
-	self.handx = 511
-	self.handy = 602
+	self.handx = 100
+	self.handy = 580
 	self.t = 0
 	self.catcooloff = 0
 	self.enemycooloff = 0
@@ -144,7 +144,6 @@ function shootingrange:update(dt)
 			end
 		elseif self.t-enemy.t0 < enemy.curvelen/400 then
 			enemy.x, enemy.y = enemy.curve((self.t-enemy.t0) / (enemy.curvelen / 400))
-
 			if enemy.x > self.width + enemy.ox or enemy.x < -enemy.ox or enemy.y > 768 + enemy.oy then
 				table.remove(self.enemies, i)
 			end
@@ -182,8 +181,10 @@ function shootingrange:mousepressed(x, y, button)
 		cat.img = imgs["cat"]
 	end
 
-	local sx = self.pos + self.handx
+	local w = imgs["cat"]:getWidth()
+	local sx = self.pos + (1024 - w) / 2 + (self.width/2-self.pos)/10 + self.handx
 	local sy = self.handy
+
 	local ex = self.pos + x
 	local ey = y
 	local vx, vy = ex - sx, ey - 200 - sy
