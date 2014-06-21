@@ -112,7 +112,7 @@ function shootingrange:update(dt)
 		self.enemycooloff = math.random() * 3 / (1+T/90)
 		if #self.enemies < self.numenemies then
 			local enemy = {}
-			enemy.n = math.random(1)-1
+			enemy.n = math.random(2)-1
 
 			local img = "enemy"..enemy.n.."1"
 
