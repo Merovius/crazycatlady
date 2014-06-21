@@ -34,6 +34,19 @@ function love.load()
 		end
 	end
 
+	for i = 1, 6 do
+		local v = "meow"..i
+		sounds[v] = love.audio.newSource("assets/"..v..".mp3", "static")
+	end
+	for i = 1, 11 do
+		local v = "scratching"..i
+		sounds[v] = love.audio.newSource("assets/"..v..".mp3", "static")
+	end
+	for i = 1, 10 do
+		local v = "thrown"..i
+		sounds[v] = love.audio.newSource("assets/"..v..".mp3", "static")
+	end
+
 	love.mouse.setGrabbed(true)
 
 	splash:load()

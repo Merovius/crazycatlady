@@ -56,5 +56,7 @@ function scratch:keypressed(key)
 		end
 		self.shake = dampening(50, 2, 5, self.t)
 		self.m = (self.m + 1) % 2
+		local n = math.random(1, 11)
+		love.audio.play(sounds["scratching"..n])
 	end
 end

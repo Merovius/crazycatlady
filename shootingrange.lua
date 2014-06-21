@@ -5,10 +5,6 @@ shootingrange = {}
 function shootingrange:load()
 	self.width = imgs["bg"]:getWidth()
 
-	for _, v in ipairs({ "angry_cat" }) do
-		sounds[v] = love.audio.newSource("assets/"..v..".mp3", "static")
-	end
-
 	self.pos = 0
 	self.cats = {}
 	self.enemies = {}
@@ -22,6 +18,7 @@ function shootingrange:load()
 	self.wanderx = 600
 	self.wandery = 100
 	self.numenemies = 3
+	self.nextsound = 5 + math.random()*5
 end
 
 function shootingrange:draw()
@@ -51,9 +48,16 @@ end
 function shootingrange:update(dt)
 	self.t = self.t + dt
 	self.remaining = self.remaining - dt
+	self.nextsound = self.nextsound - dt
 	if self.remaining < 0 then
 		screen = name
 		return
+	end
+
+	if self.nextsound <= 0 then
+		self.nextsound = 5 + math.random()*5
+		local n = math.random(1, 6)
+		love.audio.play(sounds["meow"..n])
 	end
 
 	self.catcooloff = self.catcooloff - dt
@@ -224,5 +228,6 @@ function shootingrange:mousepressed(x, y, button)
 	cat.ox, cat.oy = w/2, cat.img:getHeight()/2
 
 	table.insert(self.cats, cat)
-	love.audio.play(sounds["angry_cat"])
+	local n = math.random(1, 10)
+	love.audio.play(sounds["thrown"..n])
 end
