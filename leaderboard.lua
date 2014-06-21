@@ -20,10 +20,10 @@ function leaderboard:draw()
 	love.graphics.setColor(255, 255, 255)
 end
 
-function splash:keypressed(key)
+function leaderboard:keypressed(key)
 	shootingrange:load()
 	screen = shootingrange
 end
 
-function splash:update(dt)
+function leaderboard:update(dt)
 end

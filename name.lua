@@ -2,7 +2,7 @@ name = {}
 name.player = ""
 
 function name:draw()
-	love.graphics.draw(imgs["splash"], 0, 0, 0, 1, 1)
+	love.graphics.draw(imgs["leaderboard"], 0, 0, 0, 1, 1)
 
 	love.graphics.setColor(0, 0, 0, 100)
 	love.graphics.rectangle("fill", 90, 200, 844, 200)
@@ -16,6 +16,7 @@ function name:keypressed(key)
 	if key == "return" then
 		highscore.add(self.player, score)
 		screen = leaderboard
+		return
 	end
 	if key:match("^%w$") then
 		self.player = self.player .. key

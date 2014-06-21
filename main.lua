@@ -1,6 +1,7 @@
 require("name")
 require("sick")
 require("splash")
+require("leaderboard")
 require("scratch")
 require("shootingrange")
 
