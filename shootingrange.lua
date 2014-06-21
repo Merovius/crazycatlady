@@ -52,7 +52,9 @@ function shootingrange:update(dt)
 	self.t = self.t + dt
 	self.remaining = self.remaining - dt
 	if self.remaining < 0 then
-		love.event.quit()
+		highscore.add("Merovius", score)
+		screen = splash
+		return
 	end
 
 	self.catcooloff = self.catcooloff - dt

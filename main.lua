@@ -1,3 +1,4 @@
+require("sick")
 require("splash")
 require("scratch")
 require("shootingrange")
@@ -11,7 +12,9 @@ T = 0
 function love.load()
 	math.randomseed(os.time())
 
-	font = love.graphics.newFont("assets/comic.ttf", 100)
+	highscore.set("catlady", 9, "Nobody", 0)
+
+	font = love.graphics.newFont("assets/comic.ttf", 50)
 	love.graphics.setFont(font)
 
 	love.mouse.setGrabbed(true)
@@ -44,4 +47,6 @@ function love.mousepressed(x, y, button)
 	end
 end
 
-
+function love.quit()
+	highscore.save()
+end
