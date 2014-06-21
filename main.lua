@@ -1,3 +1,4 @@
+require("credits")
 require("name")
 require("sick")
 require("splash")

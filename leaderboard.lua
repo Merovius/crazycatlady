@@ -1,4 +1,5 @@
 leaderboard = {}
+leaderboard.T = 0
 
 function leaderboard:load()
 end
@@ -26,4 +27,8 @@ function leaderboard:keypressed(key)
 end
 
 function leaderboard:update(dt)
+	self.T = self.T + dt
+	if self.T > 20 then
+		screen = credits
+	end
 end
