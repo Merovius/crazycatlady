@@ -12,8 +12,8 @@ function shootingrange:load()
 	self.pos = 0
 	self.cats = {}
 	self.enemies = {}
-	self.handx = 100
-	self.handy = 580
+	self.handx = -75
+	self.handy = 400
 	self.t = 0
 	self.catcooloff = 0
 	self.enemycooloff = 0
@@ -32,7 +32,9 @@ function shootingrange:draw()
 	end
 
 	for _, cat in ipairs(self.cats) do
-		love.graphics.draw(cat.img, cat.x-cat.ox-self.pos, cat.y-cat.oy, 0, 1, 1)
+		local scale = 1/(1+self.t - cat.t0)
+
+		love.graphics.draw(cat.img, cat.x-self.pos, cat.y, 0, scale, scale, -cat.ox, -cat.oy)
 	end
 
 	local w = imgs["muschi_holding_02"]:getWidth()
@@ -76,7 +78,6 @@ function shootingrange:update(dt)
 		self.pos = self.width - 1024
 	end
 
-	local thresh = imgs["catdown"]:getWidth()/ 2
 	for i, cat in ipairs(self.cats) do
 		local newx, newy = cat.curve(self.t - cat.t0)
 		if not cat.turned and newy > cat.y then
@@ -95,7 +96,7 @@ function shootingrange:update(dt)
 			table.remove(self.cats, i)
 		elseif self.t - cat.t0 >= 0.8 then
 			for j, enemy in ipairs(self.enemies) do
-				if dist(cat.x, cat.y, enemy.x, enemy.y) < thresh then
+				if dist(cat.x+cat.ox-self.pos, cat.y+cat.oy, enemy.x-self.pos, enemy.y-120) < 50 then
 					table.remove(self.cats, i)
 					table.remove(self.enemies, j)
 					scratch.n = enemy.n
@@ -209,11 +210,12 @@ function shootingrange:mousepressed(x, y, button)
 	end
 
 	local w = cat.img:getWidth()
+	local h = cat.img:getHeight()
 	local sx = self.pos + (1024 - w) / 2 + (self.width/2-self.pos)/10 + self.handx
 	local sy = self.handy
 
-	local ex = self.pos + x
-	local ey = y
+	local ex = self.pos + x - w/2
+	local ey = y - h/2
 	local vx, vy = ex - sx, ey - 200 - sy
 
 	cat.curve = bezier(sx, sy, sx + vx, sy + vy, ex, ey-150, ex, ey)
