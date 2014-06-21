@@ -15,8 +15,13 @@ function scratch:draw()
 
 	love.graphics.setColor(255*(1-self.mult), 255*self.mult, 0)
 	love.graphics.rectangle("fill", 100, 700, 824*self.mult, 20)
-	love.graphics.setColor(255, 255, 255)
 	love.graphics.rectangle("line", 100, 700, 824, 20)
+
+	love.graphics.setColor(0, 0, 0)
+	love.graphics.circle("fill", 100, 100, 52)
+	love.graphics.setColor(self.t/5 * 255, (1-self.t/5)*255, 0)
+	love.graphics.arc("fill", 100, 100, 50, 7*math.pi / 2, (3*math.pi / 2) + 2*math.pi*(self.t/5))
+	love.graphics.setColor(255, 255, 255)
 end
 
 function scratch:update(dt)
