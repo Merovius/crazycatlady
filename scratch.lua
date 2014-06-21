@@ -15,7 +15,7 @@ function scratch:draw()
 	local x = ((1024-img:getWidth()) / 2) / scale
 	local y = (768-h*scale)
 
-	love.graphics.setColor(150, 150, 150)
+	love.graphics.setColor(231, 189, 213)
 	love.graphics.rectangle("fill", 0, 0, 1024, 768)
 	love.graphics.setColor(255, 255, 255)
 
