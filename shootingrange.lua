@@ -20,7 +20,11 @@ function shootingrange:load()
 	self.t = 0
 	self.catcooloff = 0
 	self.enemycooloff = 0
-	self.remaining = 10
+	self.remaining = 120
+	self.landheight = 200
+	self.wanderx = 600
+	self.wandery = 100
+	self.numenemies = 3
 end
 
 function shootingrange:draw()
@@ -101,33 +105,60 @@ function shootingrange:update(dt)
 	self.enemycooloff = self.enemycooloff - dt
 	if self.enemycooloff <= 0 then
 		self.enemycooloff = math.random() * 3 / (1+T/90)
-		if #self.enemies < 5 then
-			local startx = math.random()*self.width
-			local endx = startx
-			while math.abs(endx - startx) < 200 do
-				endx = math.random()*self.width
-			end
-
+		if #self.enemies < self.numenemies then
 			local n = math.random(3)-1
 			local enemy = {}
 			enemy.img = imgs[string.format("enemy%d", n)]
+
 			local w, h = enemy.img:getWidth(), enemy.img:getHeight()
 			enemy.ox = w/2
 			enemy.oy = h/2
-			local c1 = bezier(startx, 768+h/2, startx, 768-h/2, startx, 768-h/2, (startx+endx)/2, 768-h/2)
-			local c2 = bezier((startx+endx)/2, 768-h/2, endx, 768-h/2, endx, 768-h/2, endx, 768+h/2)
-			enemy.curve = concat(c1, c2)
-			enemy.speed = math.abs(startx-endx)*(1+math.random()) * 0.01 / (1 + T/120)
-			enemy.t0 = self.t
+
+			local startx = math.random()*(self.width - 768 - w)
+			if startx > self.pos - w/2 then
+				startx = startx + 768 + w
+			end
+			local endx = startx + math.random()*self.wanderx - self.wanderx/2
+
+			local starty = 768-math.random()*self.landheight
+			local endy = starty + math.random()*self.wandery - self.wandery/2
+			if endy < 768 - self.landheight then
+				endy = 768 - self.landheight
+			end
+			enemy.x = startx
+			enemy.y = starty
+
+			enemy.curve = line(startx, starty, endx, endy)
+			enemy.curvelen = len(startx, starty, endx, endy)
+			enemy.wait = math.random()
+
 			table.insert(self.enemies, enemy)
 		end
 	end
 
 	for i, enemy in ipairs(self.enemies) do
-		if self.t-enemy.t0 < enemy.speed then
-			enemy.x, enemy.y = enemy.curve((self.t-enemy.t0)/enemy.speed)
+		if enemy.wait > 0 then
+			enemy.wait = enemy.wait - dt
+			if enemy.wait <= 0 then
+				enemy.t0 = self.t
+			end
+		elseif self.t-enemy.t0 < enemy.curvelen/400 then
+			enemy.x, enemy.y = enemy.curve((self.t-enemy.t0) / (enemy.curvelen / 400))
+
+			if enemy.x > self.width + enemy.ox or enemy.x < -enemy.ox or enemy.y > 768 + enemy.oy then
+				table.remove(self.enemies, i)
+			end
 		else
-			table.remove(self.enemies, i)
+			local startx, starty = enemy.x, enemy.y
+			local endx = startx + (0.5+math.random())*self.wanderx - self.wanderx/2
+			local endy = starty + (0.5+math.random())*self.wandery - self.wandery/2
+			if endy < 768 - self.landheight then
+				endy = 768 - self.landheight
+			end
+			enemy.t0 = self.t
+			enemy.curvelen = len(startx, starty, endx, endy)
+			enemy.wait = math.random()
+			enemy.curve = line(startx, starty, endx, endy)
 		end
 	end
 end
