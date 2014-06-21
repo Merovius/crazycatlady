@@ -47,6 +47,10 @@ function love.load()
 		sounds[v] = love.audio.newSource("assets/"..v..".mp3", "static")
 	end
 
+	music = love.audio.newSource("assets/music.mp3", "stream")
+	music:setLooping(true)
+	love.audio.play(music)
+
 	love.mouse.setGrabbed(true)
 
 	splash:load()
