@@ -3,7 +3,7 @@ require("util")
 shootingrange = {}
 
 function shootingrange:load()
-	for _, v in ipairs({ "bg", "hand", "cat", "enemy0", "enemy1", "enemy2" }) do
+	for _, v in ipairs({ "bg", "hand", "cat", "enemy0", "enemy1", "enemy2", "muschi_holding_02" }) do
 		imgs[v] = love.graphics.newImage("assets/"..v..".png")
 	end
 	self.width = imgs["bg"]:getWidth()
@@ -15,8 +15,8 @@ function shootingrange:load()
 	self.pos = 0
 	self.cats = {}
 	self.enemies = {}
-	self.handx = 754
-	self.handy = 571
+	self.handx = 511
+	self.handy = 602
 	self.t = 0
 	self.catcooloff = 0
 	self.enemycooloff = 0
@@ -37,10 +37,15 @@ function shootingrange:draw()
 		love.graphics.draw(imgs["cat"], cat.x-dx-self.pos, cat.y-dy, 0, 1, 1)
 	end
 
-	love.graphics.draw(imgs["hand"], 1024-imgs["hand"]:getWidth()+self.pos/10, 768-imgs["hand"]:getHeight(), 0, 1, 1)
+	local w = imgs["muschi_holding_02"]:getWidth()
+	local h = imgs["muschi_holding_02"]:getHeight()
 
+	love.graphics.draw(imgs["muschi_holding_02"], (1024-w)/2+(self.width/2-self.pos)/10, 768-h, 0, 1, 1)
+
+	love.graphics.setColor(0, 0, 0)
 	love.graphics.printf(score, 10, 10, 1024, "left")
 	love.graphics.printf(string.format("%d:%.2d", math.floor(self.remaining / 60), self.remaining % 60), 10, 10, 1014, "right")
+	love.graphics.setColor(255, 255, 255)
 end
 
 function shootingrange:update(dt)
