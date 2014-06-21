@@ -19,7 +19,7 @@ function love.load()
 	font = love.graphics.newFont("assets/comic.ttf", 50)
 	love.graphics.setFont(font)
 
-	for _, v in ipairs({ "bg", "splash", "leaderboard", "cat", "catr", "catdown", "catdownr", "muschi_holding_02" }) do
+	for _, v in ipairs({ "bg", "splash", "leaderboard", "cat", "catr", "catdown", "catdownr", "hand", "muschi_holding_01", "muschi_holding_02", "muschi_holding_blink" }) do
 		imgs[v] = love.graphics.newImage("assets/"..v..".png")
 	end
 	for i = 0, 1 do

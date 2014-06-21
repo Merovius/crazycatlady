@@ -19,6 +19,8 @@ function shootingrange:load()
 	self.wandery = 100
 	self.numenemies = 3
 	self.nextsound = 5 + math.random()*5
+	self.blinking = 0
+	self.nexteye = 0
 end
 
 function shootingrange:draw()
@@ -34,10 +36,9 @@ function shootingrange:draw()
 		love.graphics.draw(cat.img, cat.x-self.pos, cat.y, 0, scale, scale, -cat.ox, -cat.oy)
 	end
 
-	local w = imgs["muschi_holding_02"]:getWidth()
-	local h = imgs["muschi_holding_02"]:getHeight()
-
-	love.graphics.draw(imgs["muschi_holding_02"], (1024-w)/2+(self.width/2-self.pos)/10, 768-h, 0, 1, 1)
+	local w = self.hand:getWidth()
+	local h = self.hand:getHeight()
+	love.graphics.draw(self.hand, (1024-w)/2+(self.width/2-self.pos)/10, 768-h, 0, 1, 1)
 
 	love.graphics.setColor(0, 0, 0)
 	love.graphics.printf(score, 10, 10, 1024, "left")
@@ -49,9 +50,26 @@ function shootingrange:update(dt)
 	self.t = self.t + dt
 	self.remaining = self.remaining - dt
 	self.nextsound = self.nextsound - dt
+	self.blinking = self.blinking - dt
+	self.nexteye = self.nexteye - dt
 	if self.remaining < 0 then
 		screen = name
 		return
+	end
+
+	if self.nexteye < 0 and self.catcooloff == 0 then
+		self.nexteye = 1 + math.random()*2
+		if math.random(1, 4) == 1 then
+			self.blinking = 0.2
+			self.hand = imgs["muschi_holding_blink"]
+		else
+			self.hand = imgs["muschi_holding_0"..math.random(1,2)]
+		end
+	elseif self.blinking < 0 then
+		if self.hand == imgs["muschi_holding_blink"] then
+			local n = math.random(1, 2)
+			self.hand = imgs["muschi_holding_0"..n]
+		end
 	end
 
 	if self.nextsound <= 0 then
@@ -60,7 +78,13 @@ function shootingrange:update(dt)
 		love.audio.play(sounds["meow"..n])
 	end
 
-	self.catcooloff = self.catcooloff - dt
+	if self.catcooloff > 0 then
+		self.catcooloff = self.catcooloff - dt
+	end
+	if self.catcooloff < 0 then
+		self.hand = imgs["muschi_holding_0"..math.random(1,2)]
+		self.catcooloff = 0
+	end
 
 	local x = love.mouse.getX()
 
@@ -230,4 +254,6 @@ function shootingrange:mousepressed(x, y, button)
 	table.insert(self.cats, cat)
 	local n = math.random(1, 10)
 	love.audio.play(sounds["thrown"..n])
+
+	self.hand = imgs["hand"]
 end
