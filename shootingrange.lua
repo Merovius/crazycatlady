@@ -3,7 +3,7 @@ require("util")
 shootingrange = {}
 
 function shootingrange:load()
-	for _, v in ipairs({ "bg", "hand", "cat", "enemy0", "enemy1", "enemy2", "muschi_holding_02" }) do
+	for _, v in ipairs({ "bg", "hand", "cat", "catr", "enemy0", "enemy1", "enemy2", "muschi_holding_02" }) do
 		imgs[v] = love.graphics.newImage("assets/"..v..".png")
 	end
 	self.width = imgs["bg"]:getWidth()
@@ -38,7 +38,7 @@ function shootingrange:draw()
 	local dy = imgs["cat"]:getHeight()/2
 
 	for _, cat in ipairs(self.cats) do
-		love.graphics.draw(imgs["cat"], cat.x-dx-self.pos, cat.y-dy, 0, 1, 1)
+		love.graphics.draw(cat.img, cat.x-dx-self.pos, cat.y-dy, 0, 1, 1)
 	end
 
 	local w = imgs["muschi_holding_02"]:getWidth()
@@ -175,6 +175,12 @@ function shootingrange:mousepressed(x, y, button)
 
 	local cat = {}
 	cat.t0 = self.t
+
+	if x > 1024/2 then
+		cat.img = imgs["catr"]
+	else
+		cat.img = imgs["cat"]
+	end
 
 	local sx = self.pos + self.handx
 	local sy = self.handy
