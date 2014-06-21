@@ -1,4 +1,4 @@
-scale = 1.6
+scale = 1.0
 
 function love.conf(t)
 	t.title = "Crazy cat lady"

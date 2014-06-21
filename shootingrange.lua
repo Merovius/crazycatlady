@@ -24,15 +24,11 @@ function shootingrange:load()
 end
 
 function shootingrange:draw()
-	love.graphics.setColor(135, 206, 255)
-	love.graphics.rectangle("fill", 0, 0, 1024, 768)
-	love.graphics.setColor(255, 255, 255)
+	love.graphics.draw(imgs["bg"], -self.pos, 0, 0, scale, scale)
 
 	for _, enemy in ipairs(self.enemies) do
 		love.graphics.draw(enemy.img, enemy.x-enemy.ox-self.pos, enemy.y-enemy.oy, 0, 1, 1)
 	end
-
-	love.graphics.draw(imgs["bg"], -self.pos, 0, 0, scale, scale)
 
 	local dx = imgs["cat"]:getWidth()/2
 	local dy = imgs["cat"]:getHeight()/2
