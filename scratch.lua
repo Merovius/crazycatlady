@@ -34,7 +34,7 @@ function scratch:draw()
 end
 
 function scratch:update(dt)
-	self.mult = self.mult - dt
+	self.mult = self.mult - dt*math.log(1+T/60)
 	if self.mult < 0 then
 		self.mult = 0
 	end
