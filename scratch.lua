@@ -4,17 +4,26 @@ function scratch:load()
 	self.t = 0
 	self.mult = 0.5
 	self.shake = const(0)
+	self.m = 0
 end
 
 function scratch:draw()
-	local h = self.img:getHeight()
+	local img = imgs["scratch"..self.n..self.m]
+
+	local h = img:getHeight()
 	local scale = (768 / h) * 0.8
-	local x = ((1024-self.img:getWidth()) / 2) / scale
+	local x = ((1024-img:getWidth()) / 2) / scale
 	local y = (768-h*scale)
-	love.graphics.draw(self.img, x + self.shake(self.t), y, 0, scale, scale)
+
+	love.graphics.setColor(150, 150, 150)
+	love.graphics.rectangle("fill", 0, 0, 1024, 768)
+	love.graphics.setColor(255, 255, 255)
+
+	love.graphics.draw(img, x + self.shake(self.t), y, 0, scale, scale)
 
 	love.graphics.setColor(255*(1-self.mult), 255*self.mult, 0)
 	love.graphics.rectangle("fill", 100, 700, 824*self.mult, 20)
+	love.graphics.setColor(0, 0, 0)
 	love.graphics.rectangle("line", 100, 700, 824, 20)
 
 	love.graphics.setColor(0, 0, 0)
@@ -46,9 +55,6 @@ function scratch:keypressed(key)
 			self.mult = 1
 		end
 		self.shake = dampening(50, 2, 5, self.t)
+		self.m = (self.m + 1) % 2
 	end
-end
-
-function scratch:setImg(img)
-	self.img = img
 end

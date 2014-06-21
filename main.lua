@@ -23,10 +23,13 @@ function love.load()
 	end
 	for i = 0, 0 do
 		for j = 0, 1 do
-			for _, v in ipairs{ "", "r" } do
-				local v = "enemy"..i..j..v
+			local v
+			for _, d in ipairs{ "", "r" } do
+				v = "enemy"..i..j..d
 				imgs[v] = love.graphics.newImage("assets/"..v..".png")
 			end
+			v = "scratch"..i..j
+			imgs[v] = love.graphics.newImage("assets/"..v..".png")
 		end
 	end
 

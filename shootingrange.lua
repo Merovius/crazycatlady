@@ -98,7 +98,7 @@ function shootingrange:update(dt)
 				if dist(cat.x, cat.y, enemy.x, enemy.y) < thresh then
 					table.remove(self.cats, i)
 					table.remove(self.enemies, j)
-					scratch:setImg(enemy.img)
+					scratch.n = enemy.n
 					scratch:load()
 					screen = scratch
 					return
